@@ -29,21 +29,14 @@ class TransactionList extends StatelessWidget {
                 padding: EdgeInsets.all(10),
                 child: Text(
                     "\$ ${_transactions[position].amount.toStringAsFixed(2)}",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Theme.of(context).primaryColor,
-                    )),
+                    style: Theme.of(context).textTheme.headline6),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     _transactions[position].title.toString(),
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.black),
+                    style: Theme.of(context).textTheme.headline6,
                   ),
                   Text(
                     DateFormat('yyy/MM/dd')
