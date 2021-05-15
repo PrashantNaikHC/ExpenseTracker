@@ -17,12 +17,15 @@ class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
 
   void _addInputData() {
-    final enteredTitle = titleController.text;
-    final enteredAmount = double.parse(amountController.text);
-    if (enteredTitle.isEmpty || enteredAmount <= 0) {
+    if (amountController.text.isEmpty) {
       return;
     }
-    widget._addTransaction(enteredTitle, enteredAmount);
+    final enteredTitle = titleController.text;
+    final enteredAmount = double.parse(amountController.text);
+    if (enteredTitle.isEmpty || enteredAmount <= 0 || _selectedDate == null) {
+      return;
+    }
+    widget._addTransaction(enteredTitle, enteredAmount, _selectedDate);
 
     // close the topmost sheet that is open
     Navigator.of(context).pop();
