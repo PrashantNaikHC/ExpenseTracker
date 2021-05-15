@@ -42,7 +42,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [];
 
-  void _addNewTransaction(String txnTitle, double txnAmount, DateTime datePicked) {
+  void _addNewTransaction(
+      String txnTitle, double txnAmount, DateTime datePicked) {
     final newTransaction = Transaction(
         id: DateTime.now().toString(),
         title: txnTitle,
@@ -51,6 +52,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
     setState(() {
       _transactions.add(newTransaction);
+    });
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      _transactions.removeWhere((tx) => tx.id == id);
     });
   }
 
@@ -96,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Chart(_recentTransactions),
-          TransactionList(_transactions),
+          TransactionList(_transactions, _deleteTransaction),
         ],
       )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
