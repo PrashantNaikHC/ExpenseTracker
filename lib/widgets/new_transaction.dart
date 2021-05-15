@@ -1,5 +1,6 @@
 import 'package:expense_tracker/models/transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function _addTransaction;
@@ -12,7 +13,7 @@ class NewTransaction extends StatefulWidget {
 
 class _NewTransactionState extends State<NewTransaction> {
   final amountController = TextEditingController();
-
+  DateTime _selectedDate;
   final titleController = TextEditingController();
 
   void _addInputData() {
@@ -25,6 +26,19 @@ class _NewTransactionState extends State<NewTransaction> {
 
     // close the topmost sheet that is open
     Navigator.of(context).pop();
+  }
+
+  void _showDateTimePicker() {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2019),
+            lastDate: DateTime.now())
+        .then((pickedDate) {
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    });
   }
 
   @override
@@ -46,10 +60,31 @@ class _NewTransactionState extends State<NewTransaction> {
               controller: titleController,
               onSubmitted: (_) => _addInputData(),
             ),
-            FlatButton(
+            Container(
+              height: 70,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      _selectedDate == null
+                          ? "No date chosen."
+                          : DateFormat().add_yMd().format(_selectedDate),
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  FlatButton(
+                    textColor: Theme.of(context).primaryColor,
+                    onPressed: _showDateTimePicker,
+                    child: Text("Choose date"),
+                  )
+                ],
+              ),
+            ),
+            RaisedButton(
               onPressed: _addInputData,
               child: Text('Add transaction'),
-              textColor: Colors.purple,
+              color: Theme.of(context).primaryColor,
+              textColor: Theme.of(context).textTheme.button.color,
             )
           ],
         ),
