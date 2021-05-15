@@ -1,5 +1,6 @@
 import 'package:expense_tracker/widgets/new_transaction.dart';
 import 'package:expense_tracker/widgets/transaction_list.dart';
+import 'package:expense_tracker/widgets/chart.dart';
 import 'package:flutter/material.dart';
 
 import 'models/transaction.dart';
@@ -66,6 +67,14 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
+  List<Transaction> get _recentTransactions {
+    return _transactions.where((transaction) {
+      return transaction.date.isAfter(DateTime.now().subtract(
+        Duration(days: 7),
+      ));
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,9 +90,14 @@ class _MyHomePageState extends State<MyHomePage> {
               })
         ],
       ),
-      body: Center(
-        child: TransactionList(_transactions),
-      ),
+      body: SingleChildScrollView(
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Chart(_recentTransactions),
+          TransactionList(_transactions),
+        ],
+      )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
